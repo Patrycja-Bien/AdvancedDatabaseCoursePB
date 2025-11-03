@@ -1,0 +1,8 @@
+C:\Users\lorda\source\repos\AdvancedDatabaseCoursePB\bin\Debug\AdvancedDatabaseCoursePB.dacpac
+C:\Users\lorda\source\repos\AdvancedDatabaseCoursePB\obj\Debug\AdvancedDatabaseCoursePB.sqlproj.AssemblyReference.cache
+C:\Users\lorda\source\repos\AdvancedDatabaseCoursePB\obj\Debug\Model.xml
+C:\Users\lorda\source\repos\AdvancedDatabaseCoursePB\obj\Debug\refactor.xml
+C:\Users\lorda\source\repos\AdvancedDatabaseCoursePB\obj\Debug\postdeploy.sql
+C:\Users\lorda\source\repos\AdvancedDatabaseCoursePB\obj\Debug\predeploy.sql
+C:\Users\lorda\source\repos\AdvancedDatabaseCoursePB\obj\Debug\AdvancedDatabaseCoursePB.dll
+C:\Users\lorda\source\repos\AdvancedDatabaseCoursePB\obj\Debug\AdvancedDatabaseCoursePB.pdb
