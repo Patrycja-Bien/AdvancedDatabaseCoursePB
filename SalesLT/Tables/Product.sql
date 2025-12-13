@@ -28,3 +28,56 @@
     CONSTRAINT [AK_Product_rowguid] UNIQUE NONCLUSTERED ([rowguid] ASC)
 );
 
+
+GO
+
+CREATE   TRIGGER SalesLT.trg_Product_ListPriceChange
+ON SalesLT.Product
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    INSERT INTO SalesLT.ProductPriceHistory (ProductID, OldPrice, NewPrice)
+    SELECT 
+        i.ProductID,
+        d.ListPrice AS OldPrice,
+        i.ListPrice AS NewPrice
+    FROM INSERTED i
+    JOIN DELETED d ON i.ProductID = d.ProductID
+    WHERE ISNULL(d.ListPrice, -1) <> ISNULL(i.ListPrice, -1);
+END
+GO
+CREATE   TRIGGER SalesLT.trg_BlockHighPriceIncrease
+ON SalesLT.Product
+INSTEAD OF UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO SalesLT.PriceChangeLog (ProductID, OldPrice, NewPrice, Note)
+    SELECT i.ProductID, d.ListPrice, i.ListPrice,
+           N'Próba zmiany ceny o więcej niż 20% - operacja zablokowana'
+    FROM inserted i
+    JOIN deleted d ON i.ProductID = d.ProductID
+    WHERE i.ListPrice > d.ListPrice * 1.2;
+
+    UPDATE p
+    SET p.Name = i.Name,
+        p.ProductNumber = i.ProductNumber,
+        p.Color = i.Color,
+        p.StandardCost = i.StandardCost,
+        p.ListPrice = i.ListPrice,
+        p.Size = i.Size,
+        p.Weight = i.Weight,
+        p.ProductCategoryID = i.ProductCategoryID,
+        p.ProductModelID = i.ProductModelID,
+        p.SellStartDate = i.SellStartDate,
+        p.SellEndDate = i.SellEndDate,
+        p.DiscontinuedDate = i.DiscontinuedDate,
+        p.rowguid = i.rowguid,
+        p.ModifiedDate = i.ModifiedDate
+    FROM SalesLT.Product p
+    JOIN inserted i ON p.ProductID = i.ProductID
+    JOIN deleted d ON d.ProductID = i.ProductID
+    WHERE NOT (i.ListPrice > d.ListPrice * 1.2);
+END

@@ -1,0 +1,3 @@
+﻿CREATE TYPE [dbo].[P9_surname]
+    FROM NVARCHAR (50) NOT NULL;
+
